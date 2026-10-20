@@ -1,45 +1,36 @@
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 export default function App() {
-  const usernameRef = useRef(null);
-  const passwordRef = useRef(null);
-  const [submittedUser, setSubmittedUser] = useState("");
+  const [students, setStudents] = useState([
+    { id: 1, name: "Sumit" },
+    { id: 2, name: "Rahul" },
+    { id: 3, name: "Amit" }
+  ]);
 
-  function handleSubmit(event) {
-    event.preventDefault();
-
-    const username = usernameRef.current.value;
-
-    setSubmittedUser(username);
+  function deleteStudent(id) {
+    setStudents(
+      students.filter((student) => student.id !== id)
+    );
   }
 
   return (
     <div>
-      <h1>Login Form</h1>
+      <h1>Student Management</h1>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Enter Username"
-          ref={usernameRef}
-          required
-        />
-        <br /><br />
-
-        <input
-          type="password"
-          placeholder="Enter Password"
-          ref={passwordRef}
-          required
-        />
-        <br /><br />
-
-        <button type="submit">Login</button>
-      </form>
-
-      {submittedUser && (
-        <h3>Form submitted successfully for: {submittedUser}</h3>
+      {students.length === 0 ? (
+        <p>No students available.</p>
+      ) : (
+        students.map((student) => (
+          <div key={student.id}>
+            <p>
+              {student.name}{" "}
+              <button onClick={() => deleteStudent(student.id)}>
+                Delete
+              </button>
+            </p>
+          </div>
+        ))
       )}
     </div>
   );
